@@ -10,6 +10,7 @@ const namespace = process.env.REACT_APP_MY_DOMAIN_NAMESPACE || 'default';
 
 const Counter = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [count, setCount] = useState();
 
   const incrementCounter = async () => {
@@ -29,12 +30,19 @@ const Counter = () => {
   useEffect(() => {
     const fetchCounterData = async () => {
       setIsLoading(true);
-      await axios.get(`https://api.countapi.xyz/info/${namespace}/${key}`)
-      .then((response) => {
-        setCount(response.data.value);
-      }).finally(() => {
-        setIsLoading(false);
-      })
+      setHasError(false);
+      try {
+        await axios.get(`https://api.countapi.xyz/info/${namespace}/${key}`)
+        .then((response) => {
+          setCount(response.data.value);
+        }).finally(() => {
+          setIsLoading(false);
+        })
+      }
+      catch (error) {
+        setHasError(true);
+        setCount(0);
+      }
     }
     fetchCounterData()
 
@@ -44,6 +52,7 @@ const Counter = () => {
   return (
     <div className='counter-container'>
       <div className='counter-content'>
+      {hasError && <div> Something went wrong. </div> }
       {
         isLoading ? (
           <> Loading... </>

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import '../css/counter.css';
 
-
 const key = process.env.REACT_APP_COUNT_API_KEY;
 const namespace = process.env.REACT_APP_MY_DOMAIN_NAMESPACE || 'default';
 
@@ -43,28 +42,35 @@ const Counter = () => {
 
   return (
     <div className='counter-container'>
+      <div className='counter-content'>
       {
         isLoading ? (
-          <h4> Loading... </h4>
+          <> Loading... </>
         ) : (
-          <div>
+          <div className='counter-content'>
             <h3> Counter </h3>
-            {count}
+            <div className='counter-count'>
+              {count}
+            </div>
 
-            <button
-              onClick={decrementCounter}
-            >
-              -1
-            </button>
-            <button
-              onClick={incrementCounter}
-            >
-              +1
-            </button>
+            <div className='counter-button-row'>
+              <button
+                className='counter-button'
+                onClick={decrementCounter}
+              >
+                -1
+              </button>
+              <button
+                className='counter-button'
+                onClick={incrementCounter}
+              >
+                +1
+              </button>
+            </div>
           </div>
         )
       }
-      
+      </div> 
     </div>
   );
 };
